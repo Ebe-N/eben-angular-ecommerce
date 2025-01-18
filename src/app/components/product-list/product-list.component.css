@@ -1,0 +1,51 @@
+/* Container padding */
+.main-content {
+    padding: 50px;
+  }
+  
+  /* Section content padding */
+  .section-content {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+  
+  /* Product box styling */
+  .product-box {
+    text-align: center;
+    padding: 15px;
+    border: 1px solid #ddd; /* Add a border for separation */
+    border-radius: 8px; /* Add rounded corners */
+    background-color: #f9f9f9; /* Light background for better visuals */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.2s, box-shadow 0.2s; /* Smooth hover effect */
+  }
+  
+  .product-box:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2); /* Enhanced shadow */
+  }
+  
+  /* Product image styling */
+  .product-box img {
+    width: 100%; /* Make image responsive */
+    max-width: 150px; /* Keep images consistent */
+    margin-bottom: 10px;
+  }
+  
+  /* Product text styling */
+  .product-box .product-info p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+  }
+  
+  .product-box .product-info p:nth-child(2) {
+    font-weight: bold; /* Highlight the price */
+    color: #007bff; /* Use Bootstrap's primary color */
+  }
+  
+  /* Add spacing between rows */
+  .row.g-4 > div {
+    margin-bottom: 20px;
+  }
+  

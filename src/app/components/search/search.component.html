@@ -1,0 +1,16 @@
+
+          <div class="form-header">
+            
+            <input 
+            #myInput
+            type="text"  
+            placeholder="Search for products ..." 
+            class="form-control me-2"
+            aria-label="Search for products ..."
+            (keyup.enter)="doSearch(myInput.value)">
+        
+            <button class="btn btn-outline-success" (click)="doSearch(myInput.value)">
+                Search
+            </button>
+            
+          </div>

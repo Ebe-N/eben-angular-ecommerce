@@ -1,0 +1,93 @@
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <!-- Brand Name -->
+      <a class="navbar-brand text-logo" href="#">Amazon</a>
+      
+      <!-- Mobile Menu Toggle Button -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- Navbar Links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Store</a>
+          </li>
+          <li class="nav-item">
+            
+            <a class="nav-link" href="#">
+              
+            </a>
+            
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Try Prime</a>
+          </li>
+        </ul>
+        <!-- Right-side Buttons -->
+        <div class="d-flex">
+          <button class="btn btn-primary me-2">Sign In</button>
+          <button class="btn btn-outline-secondary">Login</button>
+          <button><app-cart-status></app-cart-status></button>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- Navigation Bar ends -->
+  
+  
+    <!-- MAIN BODY -->
+
+    <app-product-category-menu></app-product-category-menu>
+
+    <router-outlet></router-outlet>
+
+
+    <!-- MAIN BODY -->
+     
+<!-- Footer -->
+<div class="container-fluid">
+  <footer class="footer py-5 bg-dark text-light">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>Get to Know Us</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light">Careers</a></li>
+            <li><a href="#" class="text-light">Amazon and Our Planet</a></li>
+            <li><a href="#" class="text-light">Investor Relations</a></li>
+            <li><a href="#" class="text-light">Press Releases</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Make Money with Us</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light">Sell on Amazon</a></li>
+            <li><a href="#" class="text-light">Amazon Associates</a></li>
+            <li><a href="#" class="text-light">Sell on Amazon Handmade</a></li>
+            <li><a href="#" class="text-light">Advertise Your Products</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4">
+          <h5>Amazon Payment Products</h5>
+          <ul class="list-unstyled">
+            <li><a href="#" class="text-light">Shop with Points</a></li>
+            <li><a href="#" class="text-light">Reload Your Balance</a></li>
+            <li><a href="#" class="text-light">Amazon Currency Converter</a></li>
+            <li><a href="#" class="text-light">Gift Cards</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+        <h5>Amazon.com</h5>
+      </div>
+    </div>
+  </footer>
+</div>
+
+  <!-- Footer ends -->

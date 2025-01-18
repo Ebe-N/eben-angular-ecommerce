@@ -1,0 +1,82 @@
+<section class="label text-center py-4 bg-light">
+    <h1>Categories</h1>
+  </section>
+  <section class="browsing-history container py-4">
+    <div class="row g-4">
+      <div class="col-6 col-md-3">
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1635310568932-47fd9c961c26?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+            class="card-img-top"
+            alt="Technology"
+          />
+          <div class="card-body">
+            <a routerLink="/category/1" routerLinkActive="active-link">Books</a>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-6 col-md-3">
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1635310568932-47fd9c961c26?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+            class="card-img-top"
+            alt="Technology"
+          />
+          <div class="card-body">
+            <a routerLink="/category/2" routerLinkActive="active-link"
+              >Coffee Mugs</a
+            >
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-6 col-md-3">
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1569388330338-53ecda03dfa1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+            class="card-img-top"
+            alt="Accessories"
+          />
+          <div class="card-body">
+            <p class="card-text text-center">Accessories</p>
+          </div>
+        </div>
+      </div>
+  
+      <div class="col-6 col-md-3">
+        <div class="card">
+          <img
+            src="https://images.unsplash.com/photo-1569388330338-53ecda03dfa1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400"
+            class="card-img-top"
+            alt="Accessories"
+          />
+          <div class="card-body">
+            <p class="card-text text-center">Accessories</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <!-- <a class="navbar-brand" href="#"></a> -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a
+          *ngFor="let tempProductCategory of productCategories"
+          routerLink="/category/{{ tempProductCategory.id }}" routerLinkActive="active" 
+          class="nav-link" href="#">
+            {{ tempProductCategory.categoryName }}
+          </a>
+
+          <app-search></app-search>
+
+        </div>
+      </div>
+    </div>
+  </nav>
