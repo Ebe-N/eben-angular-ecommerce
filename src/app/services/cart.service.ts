@@ -94,4 +94,39 @@ export class CartService {
     console.log(`totalPrice: ${totalPriceValue.toFixed(2)}, totalQuantity: ${totalQuantityValue}`);
     console.log('---');
   }
+
+  // This is a method to decrease  the quantity of the cartItem which receives the property 'tempCartItem' and assigns it to a parameter the CartItem of the type CartItem.
+  decrementQuantity(theCartItem: CartItem) {
+    // So if the tempCartItem had a difinite quantity then decrease it by one. Here there is no need to use this because already the cartCartItem is a parameter that contains the property tempCartItem that we already have access to. So decrementing the parameter already decrements the property of that specific instance of a certain class.
+    theCartItem.quantity--;
+
+    // But if the quantity of the item is now zero after performing the decrement then perform the following procedures to totally remove the item from the cartItems array.
+    if (theCartItem.quantity === 0) {
+      // Since remove is a method in the current class instance that I am working in then this is important while calling this very method and passing this parameter theCartItem to it.
+      this.remove(theCartItem);
+    }
+  }
+
+  // This is a method that performs the total removing of a CartItem totally from the CartItem array and recomputing the cartTotals.
+  remove(theCartItem: CartItem) {
+    
+    // get index of the item in the array by looping through the CartItem array
+    // tempCartItem => tempCartItem.id === theCartItem.id: This is a callback function that checks if the id of the current item (tempCartItem) matches the id of the item that was passed in (theCartItem).
+    // tempCartItem is just a temporary variable for each item in the array while findIndex() loops through this.cartItems.
+    // theCartItem.id is the id property of the item that was passed into the remove() method, which you want to find in the array. 
+    // itemIndex will store the index of the item in the array if it is found. If no item is found, findIndex() returns -1.
+    const itemIndex = this.cartItems.findIndex( tempCartItem => tempCartItem.id === theCartItem.id);
+
+    // if (itemIndex > -1): This condition checks if the item was found. If the index is greater than -1, it means the item exists in the array, and you can proceed to remove it.
+    // splice() is an array method used to remove elements from the array.
+    // itemIndex is the index where the item to be removed is located. 1 means you want to remove just one element at the given index. If you wanted to remove more, you could specify a different number.
+    
+    if (itemIndex > -1) {
+      // this line removes the item from the array at the index found in step 1.   
+      this.cartItems.splice(itemIndex, 1);
+
+      // And then the cartTotals are recomputed and the new data is republished that is the totalQuantity and the totalPrice.
+      this.computeCartTotals();
+    }
+  }
 }
