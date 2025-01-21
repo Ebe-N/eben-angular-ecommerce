@@ -9,6 +9,7 @@ import { ProductCategoryMenuComponent } from './components/product-category-menu
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
 import { Routes, RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SearchComponent } from './components/search/search.component';
 import { CartStatusComponent } from './components/cart-status/cart-status.component';
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
@@ -41,7 +42,8 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [ProductService],
   bootstrap: [AppComponent]

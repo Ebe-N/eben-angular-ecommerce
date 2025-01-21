@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-checkout',
@@ -7,4 +8,19 @@ import { Component } from '@angular/core';
 })
 export class CheckoutComponent {
 
+  checkoutFormGroup!: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit() : void {
+
+    this.checkoutFormGroup = this.formBuilder.group({
+      customer: this.formBuilder.group({
+        firstName: [''],
+        lastName: [''],
+        email: ['']
+      })
+    });
+
+  }
 }
