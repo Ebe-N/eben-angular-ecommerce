@@ -110,6 +110,7 @@
             <div class="col-md-2"><label for="country">Country</label></div>
             <div class="col-md-9">
               <div class="input-space">
+                <!-- FormControl:	Tracks the value and validation status of an individual form control. -->
                 <select formControlName="country">
                   <option>TODO</option>
                 </select>
@@ -226,7 +227,7 @@
             </div>
             <div class="col-md-9">
               <div class="input-space">
-                <select formControlName="expirationYear">
+                <select formControlName="expirationYear" (change)="handleMonthsAndYears()">
                   <option *ngFor="let year of creditCardYears">
                     {{ year }}
                   </option>
