@@ -45,7 +45,10 @@
             <div class="col-md-9">
               <div class="input-space">
                 <select formControlName="country">
-                  <option>TODO</option>
+                  <!-- [ngValue] : Keeps reference for country object to use it later -->
+                  <option *ngFor="let country of countries" [ngValue]="country">
+                    {{ country.name }}
+                  </option>
                 </select>
               </div>
             </div>
@@ -112,7 +115,9 @@
               <div class="input-space">
                 <!-- FormControl:	Tracks the value and validation status of an individual form control. -->
                 <select formControlName="country">
-                  <option>TODO</option>
+                  <option *ngFor="let country of countries" [ngValue]="country">
+                    {{ country.name }}
+                  </option>
                 </select>
               </div>
             </div>
