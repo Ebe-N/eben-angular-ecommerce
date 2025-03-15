@@ -4,6 +4,12 @@ import { Luv2ShopFormService } from '../../services/luv2-shop-form.service';
 import { Country } from '../../common/country';
 import { State } from '../../common/state';
 import { Luv2ShopValidators } from '../../validators/luv2-shop-validators';
+import { CartService } from '../../services/cart.service';
+import { CheckoutService } from '../../services/checkout.service';
+import { Router } from '@angular/router';
+import { Order } from '../../common/order';
+import { OrderItem } from '../../common/order-item';
+import { Purchase } from '../../common/purchase';
 
 @Component({
   selector: 'app-checkout',
@@ -12,11 +18,14 @@ import { Luv2ShopValidators } from '../../validators/luv2-shop-validators';
 })
 export class CheckoutComponent implements OnInit {
 
+  // The checkoutFormGroup property is a FormGroup instance that holds the form model.
   checkoutFormGroup: FormGroup;
 
+  // The totalPrice and totalQuantity properties are used to display the cart total price and quantity in the checkout form.
   totalPrice: number = 0;
   totalQuantity: number = 0;
 
+  // The creditCartYears and creditCardMonths properties handle the arrays of month and years that are retrieved from the Da
   creditCardYears: number[] = [];
   creditCardMonths: number[] = [];
 
@@ -26,10 +35,16 @@ export class CheckoutComponent implements OnInit {
   billingAddressStates: State[] = [];
 
   constructor(private formBuilder: FormBuilder,
-    private luv2ShopFormService: Luv2ShopFormService
+    private luv2ShopFormService: Luv2ShopFormService,
+    private cartService: CartService,
+    private checkOutService: CheckoutService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
+
+    this.reviewCartDetails();
+
     // Initialize the form group
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
@@ -90,10 +105,12 @@ export class CheckoutComponent implements OnInit {
     });
 
     // populate credit card months
-
+    // Inititates the starting month. Since the months API offers months starting from zero(0) then it is usually regarded to add 1 so bring the respective order we know of months. 
     const startMonth: number = new Date().getMonth() + 1;
-    console.log("startMonth: " + startMonth);
+    console.log("startMonth: " + startMonth); // console logging for debugging processes.
 
+    // populate credit cardCardMonths
+    // Here we are subscribing to the getCreditMonths method in the luv2Shop service which offers a stream of months to us that can be displayed to the user.
     this.luv2ShopFormService.getCreditCardMonths(startMonth).subscribe(
       data => {
         console.log("Retrieved credit card months: " + JSON.stringify(data));
@@ -101,7 +118,8 @@ export class CheckoutComponent implements OnInit {
       }
     );
 
-    // populate credit card years
+    // populate creditCardYears
+    // Here we are subscribing to the getCredit card years method in the Luv2ShopFormService that provides us with a stream/array of years which can be displayed to the user. 
     this.luv2ShopFormService.getCreditCardYears().subscribe(
       data => {
         console.log("Retrieved credit card years: " + JSON.stringify(data));
@@ -119,6 +137,22 @@ export class CheckoutComponent implements OnInit {
     )
   }
 
+  // This method consists of access controls which are essntial: To read user input, To update values dynamically, To validate form fields, To send data to the backend
+  reviewCartDetails() {
+  
+    // This enables us to get the latest value of the total price of all items added to the cart from the CartService.
+  this.cartService.totalPrice.subscribe(
+    totalPrice => this.totalPrice = totalPrice
+  );
+
+  //  This enables us to get the latest amount of added items to the cart array that is in the CartService.
+  this.cartService.totalQuantity.subscribe(
+    totalQuantity => this.totalQuantity = totalQuantity
+  );
+
+  }
+
+  // These are the getter values that are used to get values from the form for the purpose of form validation
   get firstName() { return this.checkoutFormGroup.get('customer.firstName'); }
   get lastName() { return this.checkoutFormGroup.get('customer.lastName'); }
   get email() { return this.checkoutFormGroup.get('customer.email'); }
@@ -166,13 +200,96 @@ export class CheckoutComponent implements OnInit {
 
     if (this.checkoutFormGroup.invalid) {
       this.checkoutFormGroup.markAllAsTouched();
+
+      // We need also to do a return statement so that nothing is executed in this method and we are done processing.
+      return;
     }
 
-    console.log(this.checkoutFormGroup.get('customer')?.value);
-    console.log('The email address is ' + this.checkoutFormGroup.get('customer')?.value.email);
+    // set up order
+    // To set up and order we'll need to create a new instance
+    let order  =  new Order();
+    // update the values of the order total price and quantity based on the values of the price and qunatity we have in our checkout compoenent
+    order.totalPrice = this.totalPrice;
+    order.totalQuantity = this.totalQuantity;
 
-    console.log('The shipping address country is ' + this.checkoutFormGroup.get('shippingAddress')?.value.country.name);
-    console.log('The shipping address state is ' + this.checkoutFormGroup.get('shippingAddress')?.value.state.name);
+    // get cart items from the cart service
+    const cartItems = this.cartService.cartItems;
+
+    // create orderItems from cartItems by converting the cartItems into orderItems.
+
+   /* // - long way: Create an empty array and then simply loop through to create new objects based on the other objects
+    let orderItems: OrderItem[] = [];
+    for (let i=0; i < cartItems.length; i++) {
+      orderItems[i] = new OrderItem(cartItems[i]);
+    }
+    // Then we go to the loop and say orders substracted by i equals new order items pass in the cart item using that constructor we created earlier
+   */
+
+    // - short way of doing the same thing
+    // This one functions by looping over the array and return a new array by applying a function to each element in that array 
+    let orderItems: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem));
+
+
+    // set up purchase by creating its new instance 
+    let purchase = new Purchase();
+
+    // populate purchase - customer
+    purchase.customer = this.checkoutFormGroup.controls['customer'].value;
+
+    // populate purchase by pulling information for the purchase shipping address - shippingAddress
+    purchase.shippingAddress = this.checkoutFormGroup.controls['shippingAddress'].value; // This access the form data for us.
+    // We then grab the objects 
+    const shippingState: State = JSON.parse(JSON.stringify(purchase.shippingAddress['state']));
+    const shippingCountry: Country = JSON.parse(JSON.stringify(purchase.shippingAddress['country']));
+    // We then grab the data in the objects accordingly
+    purchase.shippingAddress['state'] = shippingState.name;
+    purchase.shippingAddress['country'] = shippingCountry.name;
+
+    // populate purchase by pulling information for the purchase shipping address - billingAddress
+    purchase.billingAddress = this.checkoutFormGroup.controls['billingAddress'].value; // This access the form data for us.
+    // We then grab the objects 
+    const billingState: State = JSON.parse(JSON.stringify(purchase.billingAddress['state']));
+    const billingCountry: Country = JSON.parse(JSON.stringify(purchase.billingAddress['country']));
+    // We then grab the data in the objects accordingly
+    purchase.billingAddress['state'] = billingState.name;
+    purchase.billingAddress['country'] = billingCountry.name;
+
+    // populate purchase - order and orderItems
+    purchase.order = order;
+    purchase.orderItems = orderItems;
+
+    // call REST API via the CheckoutService
+    // The placeOrder method is called from the checkoutService and the purchase object is passed to it
+    this.checkOutService.placeOrder(purchase).subscribe(
+      {
+        // Write code for calling REST API and having the results come back and also setup error handling
+        next: response => {
+          alert(`Your order has been received .\nOrder tracking number: ${response.orderTrackingNumber}`)
+        
+          // reset cart
+          this.resetCart();
+
+        },
+        error: err => {
+          alert(`There was an error: ${err.message}`);
+        }
+      }
+    );
+  }
+
+  resetCart() {
+    // reset the cart data
+    this.cartService.cartItems = [];
+    // We make use of the subjects of the totalPrice and totalQuantity using .next(0) meaning send 0 to all subscribers out there so that they reset themselves like the status component and so on.
+    this.cartService.totalPrice.next(0); 
+    this.cartService.totalQuantity.next(0);
+
+    // reset the form
+    this.checkoutFormGroup.reset();
+
+    // navigate back to the products page by the router injected earlier in our constructor.
+    this.router.navigateByUrl("/products");
+
   }
 
   handleMonthsAndYears() {
