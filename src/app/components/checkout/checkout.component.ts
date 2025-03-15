@@ -354,3 +354,31 @@ export class CheckoutComponent implements OnInit {
 }
 
 // Verify the validation rules for the form
+
+
+/*
+[Frontend]   User Input (Form)
+     │
+     ▼
+[Frontend]   CheckoutComponent → Calls `onSubmit()`
+[Frontend]   Checkout Form (User Input)
+     │
+     ▼
+[Frontend]   CheckoutService → Calls `placeOrder()` via HTTP POST
+     │
+     ▼
+[Backend]    CheckoutController → Calls `checkoutService.placeOrder()`
+     │
+     ▼
+[Backend]    CheckoutServiceImpl → Processes Order and Saves Data
+     │
+     ▼
+[Database]   Customer, Order, OrderItems, Address → Data Stored
+     │
+     ▼
+[Backend]    Returns `PurchaseResponse` with Tracking Number
+     │
+     ▼
+[Frontend]   Shows Alert, Resets Cart, Navigates to Products Page
+
+*/
