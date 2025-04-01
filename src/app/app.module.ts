@@ -15,6 +15,8 @@ import { CartStatusComponent } from './components/cart-status/cart-status.compon
 import { CartDetailsComponent } from './components/cart-details/cart-details.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 
+// Routes are always listed from the specific to the most generic ones because when angular executes it scans for the routes from up top to the bottom and if it matches any generic route before the very specific one then the specific will not be displayed.
+// eg if /category comes before /category/:id then if a URL with /category/:id is requested it will return the component reflected by /category 
 const routes: Routes = [
 {path: 'checkout', component:CheckoutComponent},  
 {path: 'cart-details', component: CartDetailsComponent},
